@@ -78,7 +78,8 @@ export default function DoctorDetailsClient() {
   // Fetch on Page Load
   useEffect(() => {
     if (doctorId) {
-      fetchDoctorDetails();
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      void fetchDoctorDetails();
     }
   }, [doctorId, fetchDoctorDetails]);
 

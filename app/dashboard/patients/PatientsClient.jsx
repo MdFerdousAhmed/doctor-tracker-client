@@ -63,7 +63,7 @@ export default function PatientsClient() {
   const [error, setError] = useState("");
 
   // Fetch Doctors
-  const fetchDoctors = async () => {
+  const fetchDoctors = useCallback(async () => {
     try {
       const response = await api.get("/doctors", {
         params: { limit: 100 },
@@ -75,7 +75,7 @@ export default function PatientsClient() {
     } catch (error) {
       console.error("Failed to fetch doctors:", error);
     }
-  };
+  }, []);
 
   // Fetch Patients
   const fetchPatients = useCallback(async () => {
@@ -117,12 +117,14 @@ export default function PatientsClient() {
 
   // Load Doctors
   useEffect(() => {
-    fetchDoctors();
-  }, []);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void fetchDoctors();
+  }, [fetchDoctors]);
 
   // Load Patients
   useEffect(() => {
-    fetchPatients();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void fetchPatients();
   }, [fetchPatients]);
 
   // Open View Modal

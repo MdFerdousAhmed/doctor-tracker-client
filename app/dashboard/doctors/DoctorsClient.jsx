@@ -360,7 +360,7 @@ export default function DoctorsPage() {
                 </h2>
 
                 <p className="mt-1 text-sm text-slate-500">
-                  Enter the doctor's information below.
+                  Enter the doctor&apos;s information below.
                 </p>
               </div>
 
