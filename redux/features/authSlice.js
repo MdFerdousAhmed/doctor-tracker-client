@@ -1,4 +1,3 @@
-
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "@/lib/axios";
 
@@ -64,60 +63,70 @@ const authSlice = createSlice({
     },
   },
 
- 
-extraReducers: (builder) => {
-  builder
-    // Login
-    .addCase(loginAdmin.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    })
-    .addCase(loginAdmin.fulfilled, (state, action) => {
-      state.loading = false;
-      state.admin = action.payload;
-      state.isAuthenticated = true;
-      state.initialized = true;
-    })
-    .addCase(loginAdmin.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-      state.initialized = true;
-    })
+  extraReducers: (builder) => {
+    builder
+      // Login
+      .addCase(loginAdmin.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginAdmin.fulfilled, (state, action) => {
+        state.loading = false;
+        state.admin = action.payload;
+        state.isAuthenticated = true;
+        state.initialized = true;
+        if (typeof window !== "undefined" && action.payload?.token) {
+          localStorage.setItem("doctor_tracker_token", action.payload.token);
+        }
+      })
+      .addCase(loginAdmin.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.initialized = true;
+      })
 
-    // Get Current Admin
-    .addCase(getCurrentAdmin.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(getCurrentAdmin.fulfilled, (state, action) => {
-      state.loading = false;
-      state.admin = action.payload;
-      state.isAuthenticated = true;
-      state.initialized = true;
-    })
-    .addCase(getCurrentAdmin.rejected, (state) => {
-      state.loading = false;
-      state.admin = null;
-      state.isAuthenticated = false;
-      state.initialized = true;
-    })
+      // Get Current Admin
+      .addCase(getCurrentAdmin.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getCurrentAdmin.fulfilled, (state, action) => {
+        state.loading = false;
+        state.admin = action.payload;
+        state.isAuthenticated = true;
+        state.initialized = true;
+      })
+      .addCase(getCurrentAdmin.rejected, (state) => {
+        state.loading = false;
+        state.admin = null;
+        state.isAuthenticated = false;
+        state.initialized = true;
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("doctor_tracker_token");
+        }
+      })
 
-    // Logout
-    .addCase(logoutAdmin.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(logoutAdmin.fulfilled, (state) => {
-      state.loading = false;
-      state.admin = null;
-      state.isAuthenticated = false;
-      state.error = null;
-      state.initialized = true;
-    })
-    .addCase(logoutAdmin.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    });
-},
-
+      // Logout
+      .addCase(logoutAdmin.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(logoutAdmin.fulfilled, (state) => {
+        state.loading = false;
+        state.admin = null;
+        state.isAuthenticated = false;
+        state.error = null;
+        state.initialized = true;
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("doctor_tracker_token");
+        }
+      })
+      .addCase(logoutAdmin.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("doctor_tracker_token");
+        }
+      });
+  },
 });
 
 export const { clearAuthError } = authSlice.actions;

@@ -45,6 +45,7 @@ export default function DoctorsPage() {
   const fetchDoctors = useCallback(async () => {
     try {
       setLoading(true);
+      setError("");
 
       const response = await api.get("/doctors", {
         params: {
@@ -65,6 +66,7 @@ export default function DoctorsPage() {
       });
     } catch (error) {
       console.error("Failed to fetch doctors:", error);
+      setError(error.response?.data?.message || "Failed to fetch doctors.");
     } finally {
       setLoading(false);
     }
@@ -216,6 +218,16 @@ export default function DoctorsPage() {
             <LoaderCircle className="animate-spin" size={22} />
             Loading doctors...
           </div>
+        ) : error ? (
+          <div className="flex min-h-64 flex-col items-center justify-center px-4 text-center">
+            <p className="font-medium text-red-600">{error}</p>
+            <button
+              onClick={fetchDoctors}
+              className="mt-3 rounded-xl bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-600 hover:bg-blue-100 transition"
+            >
+              Retry
+            </button>
+          </div>
         ) : doctors.length === 0 ? (
           <div className="flex min-h-64 flex-col items-center justify-center px-4 text-center">
             <Stethoscope size={42} className="text-slate-300" />
@@ -225,7 +237,9 @@ export default function DoctorsPage() {
             </h3>
 
             <p className="mt-1 text-sm text-slate-500">
-              Add a doctor or try another search.
+              {search
+                ? "Try adjusting your search terms."
+                : "Add a doctor or try another search."}
             </p>
           </div>
         ) : (
