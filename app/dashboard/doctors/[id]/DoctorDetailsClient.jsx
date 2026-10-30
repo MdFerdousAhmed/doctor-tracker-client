@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import api from "@/lib/axios";
 import {
@@ -44,7 +44,7 @@ export default function DoctorDetailsClient() {
   const [formData, setFormData] = useState(initialForm);
 
   // Fetch Doctor and Patients
-  const fetchDoctorDetails = async () => {
+  const fetchDoctorDetails = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
@@ -73,14 +73,14 @@ export default function DoctorDetailsClient() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [doctorId]);
 
   // Fetch on Page Load
   useEffect(() => {
     if (doctorId) {
       fetchDoctorDetails();
     }
-  }, [doctorId]);
+  }, [doctorId, fetchDoctorDetails]);
 
   // Open Add Patient Modal
   const openAddModal = () => {

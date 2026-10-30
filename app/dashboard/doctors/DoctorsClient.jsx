@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import api from "@/lib/axios";
 import {
   Plus,
@@ -42,7 +42,7 @@ export default function DoctorsPage() {
   const [editingDoctor, setEditingDoctor] = useState(null);
   const [formData, setFormData] = useState(initialForm);
 
-  const fetchDoctors = async () => {
+  const fetchDoctors = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -68,7 +68,7 @@ export default function DoctorsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [search, page]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -76,7 +76,7 @@ export default function DoctorsPage() {
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [search, page]);
+  }, [fetchDoctors]);
 
   const openAddModal = () => {
     setEditingDoctor(null);

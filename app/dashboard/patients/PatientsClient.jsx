@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import api from "@/lib/axios";
 import {
   Search,
@@ -78,7 +78,7 @@ export default function PatientsClient() {
   };
 
   // Fetch Patients
-  const fetchPatients = async () => {
+  const fetchPatients = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
@@ -113,7 +113,7 @@ export default function PatientsClient() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [search, condition, startDate, endDate, page]);
 
   // Load Doctors
   useEffect(() => {
@@ -123,7 +123,7 @@ export default function PatientsClient() {
   // Load Patients
   useEffect(() => {
     fetchPatients();
-  }, [search, condition, startDate, endDate, page]);
+  }, [fetchPatients]);
 
   // Open View Modal
   const openViewModal = async (patient) => {
