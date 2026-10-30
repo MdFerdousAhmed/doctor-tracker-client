@@ -1,36 +1,170 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Doctor Tracker
 
-## Getting Started
+A secure, admin-only Doctor and Patient Management System built to simplify healthcare record management.
 
-First, run the development server:
+## Features
+
+### Authentication
+- Secure admin login and logout
+- JWT-based authentication using HTTP-only cookies
+- Protected admin routes
+
+### Doctor Management
+- Create, view, update, and delete doctors
+- Search doctors
+- Date filtering and pagination
+- View patients assigned to each doctor
+
+### Patient Management
+- Create, view, update, and delete patients
+- Search patients
+- Filter by medical condition and date
+- Filter patients by doctor
+- Pagination
+
+### Dashboard
+- Total doctors and patients
+- Patients per doctor
+- Patient registration trends over the last 7 days
+- Patients by medical condition
+
+## Technology Stack
+
+**Frontend**
+- Next.js
+- React
+- Tailwind CSS
+- Redux Toolkit
+- Axios
+- Recharts
+- Lucide React
+
+**Backend**
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT
+- bcryptjs
+
+## Project Structure
+
+```text
+doctor-tracker/
+├── doctor-tracker-client/
+│   ├── app/
+│   ├── components/
+│   ├── lib/
+│   └── package.json
+│
+├── doctor-tracker-server/
+│   ├── src/
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── middleware/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   └── validators/
+│   └── package.json
+│
+└── README.md
+```
+
+## Installation and Setup
+
+### 1. Clone the repositories
+
+Clone the frontend and backend repositories into the same project folder.
+
+### 2. Backend Setup
+
+```bash
+cd doctor-tracker-server
+npm install
+```
+
+Create a `.env` file:
+
+```env
+PORT=5000
+NODE_ENV=development
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_secure_jwt_secret
+CLIENT_URL=http://localhost:3000
+```
+
+Start the backend:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Frontend Setup
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```bash
+cd doctor-tracker-client
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a `.env.local` file:
 
-## Learn More
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+```
 
-To learn more about Next.js, take a look at the following resources:
+Start the frontend:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open http://localhost:3000 in your browser.
 
-## Deploy on Vercel
+## Architecture and Data Flow
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The application follows a client-server architecture.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. The Next.js frontend sends HTTP requests using Axios.
+2. Express.js receives API requests and validates authentication.
+3. Controllers handle application logic.
+4. Mongoose communicates with MongoDB.
+5. The backend returns JSON responses.
+6. The frontend displays the updated information.
+
+### System Architecture
+
+```mermaid
+flowchart TD
+    A[Admin] --> B[Next.js Frontend]
+    B --> C[Axios HTTP Requests]
+    C --> D[Express.js REST API]
+    D --> E[Authentication Middleware]
+    E --> F[Controllers]
+    F --> G[Mongoose]
+    G --> H[(MongoDB)]
+
+    H --> G
+    G --> F
+    F --> D
+    D --> B
+    B --> A
+
+## Technical Decisions
+
+1. **HTTP-only JWT cookies:** Authentication tokens are stored in HTTP-only cookies to reduce exposure to client-side JavaScript.
+2. **Separate frontend and backend:** Keeping Next.js and Express.js separate makes the application easier to maintain, test, and deploy independently.
+
+## Screenshots
+
+Screenshots will be added here.
+
+## Live Demo
+
+- Frontend: Coming soon
+- Backend API: Coming soon
+
+## Author
+
+Md. Ferdous Ahmed
+
+Junior Web Developer
